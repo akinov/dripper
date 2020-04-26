@@ -53,7 +53,13 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: () => {
+          Navigator.of(context).push(MaterialPageRoute<void>(
+            builder: (BuildContext context) {
+              return New();
+            },
+          ))
+        },
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ),
