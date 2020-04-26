@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'models/recipe.dart';
 
 class New extends StatefulWidget {
   New({Key key}) : super(key: key);
@@ -10,8 +11,8 @@ class New extends StatefulWidget {
 
 class _NewState extends State<New> {
   final _formKey = GlobalKey<FormState>();
-  int _a = 0;
-  int _b = 0;
+  Recipe recipe = new Recipe();
+  double ratio = 0.0;
 
   @override
   Widget build(BuildContext context) {
@@ -21,11 +22,11 @@ class _NewState extends State<New> {
         actions: <Widget>[
           FlatButton(
             onPressed: () {
-              print(_formKey.currentState.validate());
-              _formKey.currentState.save();
               FocusScope.of(context).requestFocus(FocusNode());
-              print(_a);
-              print(_b);
+
+              if (_formKey.currentState.validate()) {
+                _formKey.currentState.save();
+              }
             },
             child: Icon(Icons.check),
             shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
@@ -36,45 +37,55 @@ class _NewState extends State<New> {
           key: _formKey,
           child: Column(children: <Widget>[
             TextFormField(
-              keyboardType: TextInputType.number,
-              inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
               decoration: const InputDecoration(
-                labelText: "Email address form",
-                hintText: 'Enter your email',
+                labelText: "Name",
               ),
               autovalidate: false,
               validator: (value) {
-                // _formKey.currentState.validate()でコールされる
                 if (value.isEmpty) {
                   return 'Please enter some text';
                 }
                 return null;
               },
               onSaved: (value) {
-                setState(() => _a = int.parse(value));
+                setState(() => recipe.name = value);
               },
             ),
             TextFormField(
               keyboardType: TextInputType.number,
               inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
               decoration: const InputDecoration(
-                labelText: "Email address form",
-                hintText: 'Enter your email',
+                labelText: "Coffee",
               ),
               autovalidate: false,
               validator: (value) {
-                // _formKey.currentState.validate()でコールされる
                 if (value.isEmpty) {
-                  return 'Please enter some text';
-                } else if (false) {
-                  return 'Please enter some text';
+                  return 'Please enter some digist';
                 }
                 return null;
               },
               onSaved: (value) {
-                setState(() => _b = int.parse(value));
+                setState(() => recipe.coffee = int.parse(value));
               },
             ),
+            TextFormField(
+              keyboardType: TextInputType.number,
+              inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+              decoration: const InputDecoration(
+                labelText: "Water",
+              ),
+              autovalidate: false,
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'Please enter some digist';
+                }
+                return null;
+              },
+              onSaved: (value) {
+                setState(() => recipe.water = int.parse(value));
+              },
+            ),
+            Text(recipe.ratio),
           ])),
     );
   }
