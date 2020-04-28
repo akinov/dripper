@@ -1,3 +1,4 @@
+import 'package:dripper/models/recipe.dart';
 import 'package:flutter/material.dart';
 import 'new.dart';
 
@@ -24,11 +25,19 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  List<Recipe> _recipes = [];
 
-  void _incrementCounter() {
+  @override
+  void initState() {
+    super.initState();
+    setRecipes();
+  }
+
+  void setRecipes() async {
+    List<Recipe> recipes = await Recipe.all();
+    print(recipes);
     setState(() {
-      _counter++;
+      _recipes = recipes;
     });
   }
 
@@ -38,19 +47,19 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+      body: ListView.builder(
+        itemBuilder: (BuildContext context, int index) {
+          return Card(
+            child: Padding(
+              child: Text(
+                _recipes[index].name,
+                style: TextStyle(fontSize: 22.0),
+              ),
+              padding: EdgeInsets.all(20.0),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
-          ],
-        ),
+          );
+        },
+        itemCount: _recipes.length,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => {
