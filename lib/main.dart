@@ -30,12 +30,13 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    setRecipes();
+    loadRecipes();
   }
 
-  void setRecipes() async {
-    List<Recipe> recipes = await Recipe.all();
-    print(recipes);
+  void loadRecipes() async {
+    print('loadRecipes');
+    RecipeProvider recipeProvider = RecipeProvider();
+    List<Recipe> recipes = await recipeProvider.all();
     setState(() {
       _recipes = recipes;
     });
@@ -62,12 +63,13 @@ class _MyHomePageState extends State<MyHomePage> {
         itemCount: _recipes.length,
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => {
-          Navigator.of(context).push(MaterialPageRoute<void>(
+        onPressed: () async {
+          await Navigator.of(context).push(MaterialPageRoute<void>(
             builder: (BuildContext context) {
               return New();
             },
-          ))
+          ));
+          loadRecipes();
         },
         tooltip: 'Increment',
         child: Icon(Icons.add),
