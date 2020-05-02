@@ -1,16 +1,15 @@
+import 'package:dripper/models/recipe.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'models/recipe.dart';
-import 'models/process.dart';
 
-class New extends StatefulWidget {
-  New({Key key}) : super(key: key);
+class RecipeNew extends StatefulWidget {
+  RecipeNew({Key key}) : super(key: key);
 
   @override
-  _NewState createState() => _NewState();
+  _RecipeNewState createState() => _RecipeNewState();
 }
 
-class _NewState extends State<New> {
+class _RecipeNewState extends State<RecipeNew> {
   final _formKey = GlobalKey<FormState>();
   Recipe recipe = new Recipe();
   double ratio = 0.0;
