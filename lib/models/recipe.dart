@@ -112,6 +112,6 @@ create table $_tableName (
 
   Future dropTable() async {
     Database dbClient = await db;
-    await dbClient.query('DROP TABLE IF EXISTS todo');
+    await dbClient.execute('DROP TABLE IF EXISTS $_tableName');
   }
 }
