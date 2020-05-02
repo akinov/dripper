@@ -64,11 +64,12 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          await Navigator.of(context).push(MaterialPageRoute<void>(
+          var result = await Navigator.of(context).push(MaterialPageRoute(
             builder: (BuildContext context) {
               return New();
             },
           ));
+          print(result);
           loadRecipes();
         },
         tooltip: 'Increment',
