@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'models/recipe.dart';
+import 'models/process.dart';
 
 class New extends StatefulWidget {
   New({Key key}) : super(key: key);
@@ -21,11 +22,16 @@ class _NewState extends State<New> {
         title: Text("Add Recipe"),
         actions: <Widget>[
           FlatButton(
-            onPressed: () {
+            onPressed: () async {
               FocusScope.of(context).requestFocus(FocusNode());
 
               if (_formKey.currentState.validate()) {
                 _formKey.currentState.save();
+                RecipeProvider recipeProvider = RecipeProvider();
+                recipeProvider.save(recipe);
+                Navigator.of(context).pop(recipe);
+              } else {
+                // 何かしらのアラート出す？
               }
             },
             child: Icon(Icons.check),
