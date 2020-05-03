@@ -4,21 +4,27 @@ import 'package:sqflite/sqflite.dart';
 final String columnId = 'id';
 final String columnRecipeId = 'recipe_id';
 final String columnType = 'type';
-final String columnTime = 'time';
+final String columnDuration = 'duration';
 final String columnWater = 'water';
+
+enum ProcessType { Bloom, Wait, Pour, Stir, Other }
 
 class Process {
   int id;
   int recipeId;
   int type = 0;
-  int time;
+  int duration;
   int water;
+
+  String get typeText {
+    return ProcessType.values[type].toString().split('.')[1];
+  }
 
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{
       columnRecipeId: recipeId,
       columnType: type,
-      columnTime: time,
+      columnDuration: duration,
       columnWater: water,
     };
     if (id != null) {
@@ -33,7 +39,7 @@ class Process {
     id = map[columnId];
     recipeId = map[columnRecipeId];
     type = map[columnType];
-    time = map[columnTime];
+    duration = map[columnDuration];
     water = map[columnWater];
   }
 }
@@ -76,7 +82,7 @@ create table $_tableName (
   $columnId integer primary key autoincrement, 
   $columnRecipeId integer not null,
   $columnType integer not null,
-  $columnTime integer not null,
+  $columnDuration integer not null,
   $columnWater integer)
 ''');
   }
