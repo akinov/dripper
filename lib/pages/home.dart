@@ -20,8 +20,11 @@ class _HomePageState extends State<HomePage> {
 
   void loadRecipes() async {
     print('loadRecipes');
-    RecipeProvider recipeProvider = RecipeProvider();
-    List<Recipe> recipes = await recipeProvider.all();
+    // RecipeProvider recipeProvider = RecipeProvider();
+    // List<Recipe> recipes = await recipeProvider.all();
+    Recipe recipe = Recipe();
+    recipe.name = 'aaa';
+    List<Recipe> recipes = [recipe, recipe, recipe];
     setState(() {
       _recipes = recipes;
     });
@@ -31,17 +34,15 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('hoge'),
+        title: Text('Title'),
       ),
       body: ListView.builder(
         itemBuilder: (BuildContext context, int index) {
           return Card(
-            child: Padding(
-              child: Text(
+            child: ListTile(
+              title: Text(
                 _recipes[index].name,
-                style: TextStyle(fontSize: 22.0),
               ),
-              padding: EdgeInsets.all(20.0),
             ),
           );
         },
