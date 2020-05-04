@@ -15,7 +15,6 @@ class _RecipeNewState extends State<RecipeNew> {
   final _formKey = GlobalKey<FormState>();
   Recipe _recipe = new Recipe();
   List<Process> _processes = [];
-  double ratio = 0.0;
 
   @override
   Widget build(BuildContext context) {
@@ -30,18 +29,24 @@ class _RecipeNewState extends State<RecipeNew> {
                 if (_formKey.currentState.validate()) {
                   _formKey.currentState.save();
                   RecipeProvider recipeProvider = RecipeProvider();
-                  recipeProvider.save(_recipe);
+                  _recipe = await recipeProvider.save(_recipe);
+                  ProcessProvider processProvider = ProcessProvider();
+                  _processes.forEach((process) {
+                    process.recipeId = _recipe.id;
+                    processProvider.save(process);
+                  });
                   Navigator.of(context).pop(_recipe);
                 } else {
                   // 何かしらのアラート出す？
                 }
               },
-              child: Icon(Icons.check),
+              child: Text('Save', style: TextStyle(color: Colors.white)),
               shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
             ),
           ],
         ),
-        body: Container(
+        body: SingleChildScrollView(
+            child: Container(
           padding: EdgeInsets.all(16.0),
           child: Form(
               key: _formKey,
@@ -50,7 +55,7 @@ class _RecipeNewState extends State<RecipeNew> {
                   children: <Widget>[
                     TextFormField(
                       decoration: const InputDecoration(
-                        labelText: "Name",
+                        labelText: "Recipe Name",
                       ),
                       autovalidate: false,
                       validator: (value) {
@@ -110,41 +115,46 @@ class _RecipeNewState extends State<RecipeNew> {
                             fontWeight: FontWeight.bold,
                           ),
                         )),
-                    Expanded(
-                        child: ListView.builder(
-                      itemBuilder: (BuildContext context, int index) {
-                        return Card(
-                          child: ListTile(
-                            title: Text(
-                              _processes[index].typeText,
-                            ),
-                            subtitle: Text('hoghoge'),
-                            leading: Text('aa'),
-                            trailing: Text('bb'),
-                          ),
-                        );
-                      },
-                      itemCount: _processes.length,
-                    )),
+                    Column(children: processesListCards()),
                     Card(
                       child: ListTile(
-                          onTap: () async {
-                            Process process = await Navigator.of(context)
-                                .push(MaterialPageRoute(
-                              builder: (BuildContext context) {
-                                return ProcessNew();
-                              },
-                            ));
-                            if (process != null) {
-                              setState(() => _processes.add(process));
-                            }
-                          },
+                          onTap: _addProcess,
                           title: Text(
                             'Add process',
                           ),
                           leading: Icon(Icons.add)),
                     )
                   ])),
-        ));
+        )));
+  }
+
+  List<Card> processesListCards() {
+    return _processes.map((process) {
+      return Card(
+        child: ListTile(
+          title: Text(
+            process.typeText,
+          ),
+          // subtitle: Text('hoghoge'),
+          leading: Text(process.step.toString()),
+          trailing: Icon(Icons.more_vert),
+          subtitle: Text(process.title),
+        ),
+      );
+    }).toList();
+  }
+
+  void _addProcess() async {
+    Process process = await Navigator.of(context).push(MaterialPageRoute(
+      builder: (BuildContext context) {
+        return ProcessNew();
+      },
+    ));
+    if (process != null) {
+      setState(() {
+        process.step = _processes.length + 1;
+        _processes.add(process);
+      });
+    }
   }
 }

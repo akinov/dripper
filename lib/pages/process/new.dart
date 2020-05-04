@@ -30,7 +30,7 @@ class _ProcessNewState extends State<ProcessNew> {
                   // 何かしらのアラート出す？
                 }
               },
-              child: Icon(Icons.check),
+              child: Text('Save', style: TextStyle(color: Colors.white)),
               shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
             ),
           ],
@@ -56,7 +56,7 @@ class _ProcessNewState extends State<ProcessNew> {
                   keyboardType: TextInputType.number,
                   inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
                   decoration: const InputDecoration(
-                    labelText: "Coffee",
+                    labelText: "Duration(s)",
                   ),
                   autovalidate: false,
                   validator: (value) {
@@ -73,7 +73,7 @@ class _ProcessNewState extends State<ProcessNew> {
                   keyboardType: TextInputType.number,
                   inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
                   decoration: const InputDecoration(
-                    labelText: "Water",
+                    labelText: "Water(ml)",
                   ),
                   autovalidate: false,
                   validator: (value) {
