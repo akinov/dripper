@@ -1,5 +1,6 @@
 import 'package:dripper/models/recipe.dart';
 import 'package:dripper/pages/recipe/new.dart';
+import 'package:dripper/pages/recipe/show.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -20,11 +21,8 @@ class _HomePageState extends State<HomePage> {
 
   void loadRecipes() async {
     print('loadRecipes');
-    // RecipeProvider recipeProvider = RecipeProvider();
-    // List<Recipe> recipes = await recipeProvider.all();
-    Recipe recipe = Recipe();
-    recipe.name = 'aaa';
-    List<Recipe> recipes = [recipe, recipe, recipe];
+    RecipeProvider recipeProvider = RecipeProvider();
+    List<Recipe> recipes = await recipeProvider.all();
     setState(() {
       _recipes = recipes;
     });
@@ -38,11 +36,19 @@ class _HomePageState extends State<HomePage> {
       ),
       body: ListView.builder(
         itemBuilder: (BuildContext context, int index) {
+          Recipe recipe = _recipes[index];
           return Card(
             child: ListTile(
               title: Text(
-                _recipes[index].name,
+                recipe.name,
               ),
+              onTap: () async {
+                await Navigator.of(context).push(MaterialPageRoute(
+                  builder: (BuildContext context) {
+                    return RecipeShow(recipe);
+                  },
+                ));
+              },
             ),
           );
         },
