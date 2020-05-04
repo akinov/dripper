@@ -64,7 +64,7 @@ class _HomePageState extends State<HomePage> {
           print(result);
           loadRecipes();
         },
-        tooltip: 'Increment',
+        tooltip: 'Add Recipe',
         child: Icon(Icons.add),
       ),
     );
