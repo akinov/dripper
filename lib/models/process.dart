@@ -6,6 +6,7 @@ final String columnRecipeId = 'recipe_id';
 final String columnType = 'type';
 final String columnDuration = 'duration';
 final String columnWater = 'water';
+final String columnStep = 'step';
 
 enum ProcessType { Bloom, Wait, Pour, Stir, Other }
 
@@ -15,9 +16,18 @@ class Process {
   int type = 0;
   int duration;
   int water;
+  int step = 1;
 
   String get typeText {
     return ProcessType.values[type].toString().split('.')[1];
+  }
+
+  String get title {
+    List<String> result = ['Duration ' + duration.toString() + 's'];
+    if (type != 1) {
+      result.add('Water ' + water.toString() + 'ml');
+    }
+    return result.join(', ');
   }
 
   Map<String, dynamic> toMap() {
@@ -26,6 +36,7 @@ class Process {
       columnType: type,
       columnDuration: duration,
       columnWater: water,
+      columnStep: step,
     };
     if (id != null) {
       map[columnId] = id;
@@ -41,6 +52,7 @@ class Process {
     type = map[columnType];
     duration = map[columnDuration];
     water = map[columnWater];
+    step = map[columnStep];
   }
 }
 
@@ -83,6 +95,7 @@ create table $_tableName (
   $columnRecipeId integer not null,
   $columnType integer not null,
   $columnDuration integer not null,
+  $columnStep integer not null,
   $columnWater integer)
 ''');
   }
@@ -104,8 +117,10 @@ create table $_tableName (
 
   Future<List<Process>> recipedBy(int recipeId) async {
     Database dbClient = await db;
-    List<Map> result = await dbClient
-        .query(_tableName, where: '$columnRecipeId = ?', whereArgs: [recipeId]);
+    List<Map> result = await dbClient.query(_tableName,
+        where: '$columnRecipeId = ?',
+        whereArgs: [recipeId],
+        orderBy: columnStep);
     return List.generate(result.length, (index) => fromMap(result[index]));
   }
 
