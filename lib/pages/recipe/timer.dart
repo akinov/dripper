@@ -18,15 +18,48 @@ class _RecipeTimerState extends State<RecipeTimer> {
   DateTime _now;
   Duration _tmpDuration = Duration();
   bool _doing = true;
+  List<Process> _processes;
 
   @override
   void initState() {
+    _setupProcsses();
     _startTimer();
     super.initState();
   }
 
+  void _setupProcsses() {
+    List<Process> result = [];
+    int time = 0;
+    widget.processes.forEach((process) {
+      time += process.duration;
+      process.inSeconds = time;
+      result.add(process);
+    });
+    setState(() => _processes = result);
+  }
+
   void _onTimer(Timer timer) {
-    setState(() => _now = DateTime.now());
+    Process process = _currentProcess();
+    if (_processes.length > 0) {
+      if (process.inSeconds <= _duration().inSeconds) {
+        _processes.removeAt(0);
+      }
+    } else {
+      _stopTimer();
+    }
+
+    setState(() {
+      _now = DateTime.now();
+      _processes = _processes;
+    });
+  }
+
+  Process _currentProcess() {
+    if (_processes.length == 0) {
+      return null;
+    } else {
+      return _processes.first;
+    }
   }
 
   Duration _duration() {
@@ -51,7 +84,7 @@ class _RecipeTimerState extends State<RecipeTimer> {
       _start = DateTime.now();
       _now = DateTime.now();
       _timer = Timer.periodic(
-        Duration(milliseconds: 100),
+        Duration(milliseconds: 25),
         _onTimer,
       );
     });
@@ -74,16 +107,52 @@ class _RecipeTimerState extends State<RecipeTimer> {
     super.dispose();
   }
 
+  String _durationString() {
+    List times = _duration().toString().split('.');
+    return times[0] + '.' + times[1].substring(0, 2);
+  }
+
+  String _title() {
+    if (_currentProcess() != null) {
+      return _currentProcess().typeText;
+    }
+    {
+      return 'Complete!';
+    }
+  }
+
+  String _text() {
+    if (_currentProcess() != null) {
+      return _currentProcess().title;
+    }
+    {
+      return ' ';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.recipe.name),
       ),
-      body: SingleChildScrollView(
-        child: Container(
-            padding: EdgeInsets.all(16.0), child: Text(_duration().toString())),
-      ),
+      body: Center(
+          child: Column(mainAxisSize: MainAxisSize.min, children: [
+        Text(
+          _title(),
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
+        ),
+        Padding(
+            padding: EdgeInsets.all(32.0),
+            child: Text(
+              _durationString(),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
+            )),
+        Text(
+          _text(),
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+        )
+      ])),
       floatingActionButton: FloatingActionButton(
         onPressed: _toggleTimer,
         tooltip: 'Stop Timer',

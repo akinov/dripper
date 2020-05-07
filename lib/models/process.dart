@@ -17,6 +17,7 @@ class Process {
   int duration;
   int water;
   int step = 1;
+  int inSeconds;
 
   String get typeText {
     return ProcessType.values[type].toString().split('.')[1];
