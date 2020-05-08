@@ -20,7 +20,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   void loadRecipes() async {
-    print('loadRecipes');
     RecipeProvider recipeProvider = RecipeProvider();
     List<Recipe> recipes = await recipeProvider.all();
     setState(() {
@@ -32,7 +31,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Title'),
+        title: Text('Dripper'),
       ),
       body: ListView.builder(
         itemBuilder: (BuildContext context, int index) {
