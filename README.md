@@ -1,16 +1,7 @@
 # dripper
 
-Coffee recipe app
+Coffee timer app
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+| Home                                             | Add Recipe                                       | Timer                                            |
+| ------------------------------------------------ | ------------------------------------------------ | ------------------------------------------------ |
+| ![ScreenShot01](./assets/store/Screenshot01.png) | ![ScreenShot02](./assets/store/Screenshot02.png) | ![ScreenShot03](./assets/store/Screenshot03.png) |
