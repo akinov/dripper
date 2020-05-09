@@ -93,7 +93,7 @@ class ProcessProvider {
     return theDb;
   }
 
-  void onCreate(Database db, int version) async {
+  Future onCreate(Database db, int version) async {
     await db.execute('''
 create table $_tableName ( 
   $columnId integer primary key autoincrement, 
@@ -136,9 +136,9 @@ create table $_tableName (
     return await dbClient.close();
   }
 
-  Future dropTable() async {
+  Future reCreateTable() async {
     Database dbClient = await db;
     await dbClient.execute('DROP TABLE IF EXISTS $_tableName');
-    close();
+    await onCreate(dbClient, 1);
   }
 }
