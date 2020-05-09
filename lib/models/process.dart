@@ -7,6 +7,7 @@ final String columnType = 'type';
 final String columnDuration = 'duration';
 final String columnWater = 'water';
 final String columnStep = 'step';
+final String columnNote = 'note';
 
 enum ProcessType { Bloom, Wait, Pour, Stir, Other }
 
@@ -17,6 +18,7 @@ class Process {
   int duration;
   int water;
   int step = 1;
+  String note = '';
   int inSeconds;
 
   String get typeText {
@@ -38,6 +40,7 @@ class Process {
       columnDuration: duration,
       columnWater: water,
       columnStep: step,
+      columnNote: note,
     };
     if (id != null) {
       map[columnId] = id;
@@ -54,12 +57,13 @@ class Process {
     duration = map[columnDuration];
     water = map[columnWater];
     step = map[columnStep];
+    note = map[columnNote];
   }
 }
 
 class ProcessProvider {
   static Database _db;
-  static String _tableName = 'todo2';
+  static String _tableName = 'todo3';
 
   Process fromMap(Map<String, dynamic> map) {
     return Process.fromMap(map);
@@ -97,6 +101,7 @@ create table $_tableName (
   $columnType integer not null,
   $columnDuration integer not null,
   $columnStep integer not null,
+  $columnNote text not null,
   $columnWater integer)
 ''');
   }
