@@ -12,6 +12,7 @@ class MyApp extends StatelessWidget {
       title: 'dripper',
       home: HomePage(),
       theme: ThemeData(
+          primarySwatch: Colors.brown,
           textTheme:
               GoogleFonts.notoSansTextTheme(Theme.of(context).textTheme)),
     );
