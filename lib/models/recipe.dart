@@ -74,7 +74,7 @@ class RecipeProvider {
     return theDb;
   }
 
-  void onCreate(Database db, int version) async {
+  Future onCreate(Database db, int version) async {
     await db.execute('''
 create table $_tableName ( 
   $columnId integer primary key autoincrement, 
@@ -107,11 +107,13 @@ create table $_tableName (
 
   Future close() async {
     Database dbClient = await db;
+    _db = null;
     return await dbClient.close();
   }
 
-  Future dropTable() async {
+  Future reCreateTable() async {
     Database dbClient = await db;
     await dbClient.execute('DROP TABLE IF EXISTS $_tableName');
+    await onCreate(dbClient, 1);
   }
 }

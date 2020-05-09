@@ -9,9 +9,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       // debugShowCheckedModeBanner: false,
-      title: 'Dripper',
+      title: 'dripper',
       home: HomePage(),
       theme: ThemeData(
+          primarySwatch: Colors.brown,
           textTheme:
               GoogleFonts.notoSansTextTheme(Theme.of(context).textTheme)),
     );

@@ -1,6 +1,8 @@
+import 'package:dripper/models/process.dart';
 import 'package:dripper/models/recipe.dart';
 import 'package:dripper/pages/recipe/new.dart';
 import 'package:dripper/pages/recipe/show.dart';
+import 'package:dripper/wigets/customAppBar.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -11,28 +13,63 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  RecipeProvider _recipeProvider = RecipeProvider();
+  ProcessProvider _processProvider = ProcessProvider();
   List<Recipe> _recipes = [];
+  int _titleTapCount = 0;
 
   @override
   void initState() {
     super.initState();
-    loadRecipes();
+    _loadRecipes();
   }
 
-  void loadRecipes() async {
-    RecipeProvider recipeProvider = RecipeProvider();
-    List<Recipe> recipes = await recipeProvider.all();
-    setState(() {
-      _recipes = recipes;
-    });
+  void _loadRecipes() async {
+    List<Recipe> recipes = await _recipeProvider.all();
+    setState(() => _recipes = recipes);
+  }
+
+  void _tapTitle() {
+    _titleTapCount += 1;
+    if (_titleTapCount >= 7) {
+      _titleTapCount = 0;
+
+      showDialog(
+        context: context,
+        builder: (_) {
+          return AlertDialog(
+            title: Text("登録データの一括削除"),
+            content: Text("データを削除してもよろしいですか？"),
+            actions: <Widget>[
+              // ボタン領域
+              FlatButton(
+                child: Text("Cancel"),
+                onPressed: () => Navigator.pop(context),
+              ),
+              FlatButton(
+                child: Text("OK"),
+                onPressed: () async {
+                  await _recipeProvider.reCreateTable();
+                  await _processProvider.reCreateTable();
+                  _loadRecipes();
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Dripper'),
-      ),
+      appBar: CustomAppBar(
+          onTap: _tapTitle,
+          appBar: AppBar(
+            title: Text('dripper'),
+          )),
       body: ListView.builder(
         itemBuilder: (BuildContext context, int index) {
           Recipe recipe = _recipes[index];
@@ -61,7 +98,7 @@ class _HomePageState extends State<HomePage> {
             },
           ));
           print(result);
-          loadRecipes();
+          _loadRecipes();
         },
         tooltip: 'Add Recipe',
         child: Icon(Icons.add),
