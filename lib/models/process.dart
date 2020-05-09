@@ -127,11 +127,13 @@ create table $_tableName (
 
   Future close() async {
     Database dbClient = await db;
+    _db = null;
     return await dbClient.close();
   }
 
   Future dropTable() async {
     Database dbClient = await db;
     await dbClient.execute('DROP TABLE IF EXISTS $_tableName');
+    close();
   }
 }
