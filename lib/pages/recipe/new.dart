@@ -41,7 +41,6 @@ class _RecipeNewState extends State<RecipeNew> {
                 }
               },
               child: Text('Save', style: TextStyle(color: Colors.white)),
-              shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
             ),
           ],
         ),
