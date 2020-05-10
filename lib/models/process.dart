@@ -33,6 +33,21 @@ class Process {
     return result.join(', ');
   }
 
+  String get textForTimer {
+    switch (ProcessType.values[type]) {
+      case ProcessType.Bloom:
+        return 'Pour ${water.toString()}g of water and wait to bloom';
+      case ProcessType.Wait:
+        return 'Wait for ${duration.toString()} seconds';
+      case ProcessType.Pour:
+        return 'Pour ${water.toString()}g of water';
+      case ProcessType.Stir:
+        return 'Stir for ${duration.toString()} seconds';
+      case ProcessType.Other:
+        return '${duration.toString()} seconds $note';
+    }
+  }
+
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{
       columnRecipeId: recipeId,
