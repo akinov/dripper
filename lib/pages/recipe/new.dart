@@ -138,7 +138,7 @@ class _RecipeNewState extends State<RecipeNew> {
           // subtitle: Text('hoghoge'),
           leading: Text(process.step.toString()),
           trailing: Icon(Icons.more_vert),
-          subtitle: Text(process.title),
+          subtitle: Text(process.titleForList),
         ),
       );
     }).toList();

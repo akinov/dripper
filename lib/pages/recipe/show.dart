@@ -97,7 +97,7 @@ class _RecipeShowState extends State<RecipeShow> {
           ),
           // subtitle: Text('hoghoge'),
           leading: Text(process.step.toString()),
-          subtitle: Text(process.title),
+          subtitle: Text(process.titleForList),
         ),
       );
     }).toList();

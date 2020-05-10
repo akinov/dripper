@@ -25,7 +25,7 @@ class Process {
     return ProcessType.values[type].toString().split('.')[1];
   }
 
-  String get title {
+  String get titleForList {
     List<String> result = ['Duration ' + duration.toString() + 's'];
     if (type != 1) {
       result.add('Water ' + water.toString() + 'ml');

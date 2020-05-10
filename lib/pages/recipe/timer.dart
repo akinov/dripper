@@ -123,7 +123,7 @@ class _RecipeTimerState extends State<RecipeTimer> {
 
   String _text() {
     if (_currentProcess() != null) {
-      return _currentProcess().title;
+      return _currentProcess().titleForList;
     }
     {
       return ' ';
