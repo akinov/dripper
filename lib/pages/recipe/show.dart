@@ -61,7 +61,7 @@ class _RecipeShowState extends State<RecipeShow> {
                           fontWeight: FontWeight.bold,
                         ),
                       )),
-                  Text(widget.recipe.water.toString() + 'ml'),
+                  Text(widget.recipe.water.toString() + 'g'),
                   Padding(
                       padding: EdgeInsets.only(top: 16.0, bottom: 8.0),
                       child: Text(
@@ -97,7 +97,7 @@ class _RecipeShowState extends State<RecipeShow> {
           ),
           // subtitle: Text('hoghoge'),
           leading: Text(process.step.toString()),
-          subtitle: Text(process.title),
+          subtitle: Text(process.titleForList),
         ),
       );
     }).toList();

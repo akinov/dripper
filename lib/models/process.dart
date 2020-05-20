@@ -20,17 +20,33 @@ class Process {
   int step = 1;
   String note = '';
   int inSeconds;
+  int totalWater;
 
   String get typeText {
     return ProcessType.values[type].toString().split('.')[1];
   }
 
-  String get title {
+  String get titleForList {
     List<String> result = ['Duration ' + duration.toString() + 's'];
     if (type != 1) {
       result.add('Water ' + water.toString() + 'ml');
     }
     return result.join(', ');
+  }
+
+  String get textForTimer {
+    switch (ProcessType.values[type]) {
+      case ProcessType.Bloom:
+        return 'Pour ${water.toString()}g of water ${duration.toString()} seconds and wait to bloom';
+      case ProcessType.Wait:
+        return 'Wait for ${duration.toString()} seconds';
+      case ProcessType.Pour:
+        return 'Pour ${water.toString()}g of water ${duration.toString()} seconds';
+      case ProcessType.Stir:
+        return 'Stir for ${duration.toString()} seconds';
+      case ProcessType.Other:
+        return '${duration.toString()} seconds $note';
+    }
   }
 
   Map<String, dynamic> toMap() {

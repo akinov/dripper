@@ -31,7 +31,6 @@ class _ProcessNewState extends State<ProcessNew> {
                 }
               },
               child: Text('Save', style: TextStyle(color: Colors.white)),
-              shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
             ),
           ],
         ),

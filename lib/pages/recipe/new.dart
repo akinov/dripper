@@ -41,7 +41,6 @@ class _RecipeNewState extends State<RecipeNew> {
                 }
               },
               child: Text('Save', style: TextStyle(color: Colors.white)),
-              shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
             ),
           ],
         ),
@@ -138,7 +137,7 @@ class _RecipeNewState extends State<RecipeNew> {
           // subtitle: Text('hoghoge'),
           leading: Text(process.step.toString()),
           trailing: Icon(Icons.more_vert),
-          subtitle: Text(process.title),
+          subtitle: Text(process.titleForList),
         ),
       );
     }).toList();
