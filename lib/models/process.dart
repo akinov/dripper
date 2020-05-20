@@ -20,6 +20,7 @@ class Process {
   int step = 1;
   String note = '';
   int inSeconds;
+  int totalWater;
 
   String get typeText {
     return ProcessType.values[type].toString().split('.')[1];
@@ -36,11 +37,11 @@ class Process {
   String get textForTimer {
     switch (ProcessType.values[type]) {
       case ProcessType.Bloom:
-        return 'Pour ${water.toString()}g of water and wait to bloom';
+        return 'Pour ${water.toString()}g of water ${duration.toString()} seconds and wait to bloom';
       case ProcessType.Wait:
         return 'Wait for ${duration.toString()} seconds';
       case ProcessType.Pour:
-        return 'Pour ${water.toString()}g of water';
+        return 'Pour ${water.toString()}g of water ${duration.toString()} seconds';
       case ProcessType.Stir:
         return 'Stir for ${duration.toString()} seconds';
       case ProcessType.Other:
