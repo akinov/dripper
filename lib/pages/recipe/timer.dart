@@ -19,6 +19,7 @@ class _RecipeTimerState extends State<RecipeTimer> {
   Duration _tmpDuration = Duration();
   bool _doing = true;
   List<Process> _processes;
+  double _currentWater = 0;
 
   @override
   void initState() {
@@ -30,9 +31,14 @@ class _RecipeTimerState extends State<RecipeTimer> {
   void _setupProcsses() {
     List<Process> result = [];
     int time = 0;
+    int water = 0;
     widget.processes.forEach((process) {
       time += process.duration;
       process.inSeconds = time;
+      if (process.water != null) {
+        water += process.water;
+      }
+      process.totalWater = water;
       result.add(process);
     });
     setState(() => _processes = result);
@@ -40,17 +46,28 @@ class _RecipeTimerState extends State<RecipeTimer> {
 
   void _onTimer(Timer timer) {
     Process process = _currentProcess();
+    int seconds = _duration().inSeconds;
     if (_processes.length > 0) {
-      if (process.inSeconds <= _duration().inSeconds) {
+      if (process.inSeconds <= seconds) {
         _processes.removeAt(0);
       }
     } else {
       _stopTimer();
     }
 
+    if (process.water != null || process.water != 0) {
+      double a = (process.inSeconds -
+              process.duration -
+              (_duration().inMilliseconds / 1000)) *
+          -1;
+      double b = a.toDouble() / process.duration.toDouble();
+      _currentWater = b * process.water;
+    }
+
     setState(() {
       _now = DateTime.now();
       _processes = _processes;
+      _currentWater = _currentWater;
     });
   }
 
@@ -129,6 +146,18 @@ class _RecipeTimerState extends State<RecipeTimer> {
     }
   }
 
+  String _waterText() {
+    Process process = _currentProcess();
+    if (process == null) {
+      return '';
+    }
+    int prevWater = process.totalWater - process.water;
+    return (prevWater + _currentWater).toStringAsFixed(1) +
+        '/' +
+        process.totalWater.toStringAsFixed(1) +
+        ' g';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -137,8 +166,14 @@ class _RecipeTimerState extends State<RecipeTimer> {
       ),
       body: Center(
           child: Column(mainAxisSize: MainAxisSize.min, children: [
+        Padding(
+            padding: EdgeInsets.all(32.0),
+            child: Text(
+              _title(),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
+            )),
         Text(
-          _title(),
+          _waterText(),
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
         ),
         Padding(
